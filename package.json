@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "description": "Svelte form handlers",
   "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "rollup --config rollup.config.js -d ./dist",
+    "build": "rollup --config rollup.config.js",
     "check": "tsc --noEmit",
     "coverage": "vitest run --coverage",
     "dev": "rollup -c rollup.config.js --watch",
@@ -40,7 +42,7 @@
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.8.2",
-    "rollup": "^3.9.1",
+    "rollup": "^2.69.0",
     "rollup-plugin-svelte": "^7.1.0",
     "rollup-plugin-typescript2": "^0.34.1",
     "svelte": "^3.55.1",
@@ -51,7 +53,7 @@
     "yup": "^0.32.11"
   },
   "peerDependencies": {
-    "svelte": "^3.46.4",
+    "svelte": "^3.55.1",
     "yup": "0.x"
   }
 }
