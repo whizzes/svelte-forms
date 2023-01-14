@@ -13,16 +13,17 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v2
 
-      - name: Install PNPM
-        uses: pnpm/action-setup@v2
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
         with:
-          version: 7
+          node-version: 18
+          registry-url: https://registry.npmjs.org/
 
       - name: Install Dependencies
-        run: pnpm install
+        run: npm ci
 
-      - name: Run linter
-        run: pnpm run lint
+      - name: Build
+        run: npm run lint
 
   test:
     name: Run unit tests
@@ -31,16 +32,17 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v2
 
-      - name: Install PNPM
-        uses: pnpm/action-setup@v2
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
         with:
-          version: 7
+          node-version: 18
+          registry-url: https://registry.npmjs.org/
 
       - name: Install Dependencies
-        run: pnpm install
+        run: npm ci
 
-      - name: Run vitest
-        run: pnpm run test
+      - name: Test
+        run: npm run test
 
   build:
     name: Builds source into JavaScript
@@ -49,43 +51,17 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v2
 
-      - name: Install PNPM
-        uses: pnpm/action-setup@v2
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
         with:
-          version: 7
+          node-version: 18
+          registry-url: https://registry.npmjs.org/
 
       - name: Install Dependencies
-        run: pnpm install
-
-      - name: Run build
-        run: pnpm run build
-
-  publish_dry_run:
-    name: Publish command on dry run
-    runs-on: ubuntu-latest
-    needs: [build, test, lint]
-    env:
-      NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-    steps:
-      - name: Checkout Source Code
-        uses: actions/checkout@v2
-
-      - name: Install PNPM
-        uses: pnpm/action-setup@v2
-        with:
-          version: 7
-
-      - name: Install Dependencies
-        run: pnpm install
+        run: npm ci
 
       - name: Build
-        run: pnpm run build
-
-      - name: Set Auth Token for NPM Registry
-        run: pnpm config set //registry.npmjs.org/:_authToken ${NODE_AUTH_TOKEN}
-
-      - name: Publish
-        run: pnpm publish --dry-run --registry=https://registry.npmjs.org/ --no-git-checks
+        run: npm run build
 
   publish:
     name: Publish to npm
@@ -97,22 +73,22 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v2
 
-      - name: Install PNPM
-        uses: pnpm/action-setup@v2
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
         with:
-          version: 7
+          node-version: 18
+          registry-url: https://registry.npmjs.org/
 
       - name: Install Dependencies
-        run: pnpm install
+        run: npm ci
 
       - name: Build
-        run: pnpm run build
+        run: npm run build
 
-      - name: Set Auth Token for NPM Registry
-        run: pnpm config set //registry.npmjs.org/:_authToken ${NODE_AUTH_TOKEN}
-
-      - name: Publish
-        run: pnpm publish --access public --registry=https://registry.npmjs.org/ --no-git-checks
+      - name: Publish to NPM
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
   create-release:
     name: Create a release
