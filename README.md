@@ -5,6 +5,14 @@
   </h4>
 </div>
 
+<div align="center">
+
+![Build](https://github.com/whizzes/svelte-forms/workflows/build/badge.svg)
+![Tests](https://github.com/whizzes/svelte-forms/workflows/test/badge.svg)
+![Lint](https://github.com/whizzes/svelte-forms/workflows/lint/badge.svg)
+
+ </div>
+
 ## Installation
 
 ```bash
