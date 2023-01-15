@@ -11,6 +11,8 @@
 ![Tests](https://github.com/whizzes/svelte-forms/workflows/test/badge.svg)
 ![Lint](https://github.com/whizzes/svelte-forms/workflows/lint/badge.svg)
 ![Publish](https://github.com/whizzes/svelte-forms/workflows/publish/badge.svg)
+[![Version](https://img.shields.io/npm/v/@whizzes/svelte-forms.svg?style=flat)](https://www.npmjs.com/package/@whizzes/svelte-confeti)
+[![Downloads](https://img.shields.io/npm/dm/@whizzes/svelte-forms.svg?style=flat)](https://www.npmjs.com/package/@whizzes/svelte-confeti)
 
 </div>
 
