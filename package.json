@@ -54,6 +54,6 @@
   },
   "peerDependencies": {
     "svelte": "^3.55.1",
-    "yup": "0.x"
+    "yup": "1.x"
   }
 }
