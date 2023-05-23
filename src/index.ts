@@ -6,7 +6,7 @@ import { isSchema, ValidationError } from 'yup';
 import { clone } from './utils';
 
 import type { Readable, Writable } from 'svelte/store';
-import type { SchemaLike } from 'yup/lib/types';
+import type { Schema } from 'yup';
 
 export { field } from './action';
 
@@ -237,7 +237,7 @@ export type FormConfig<T extends object> = {
    *
    * [1]: https://github.com/jquense/yup
    */
-  validationSchema?: SchemaLike;
+  validationSchema?: Schema;
 };
 
 /**
