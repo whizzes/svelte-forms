@@ -42,7 +42,7 @@
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.8.2",
-    "rollup": "^2.69.0",
+    "rollup": "^3.23.0",
     "rollup-plugin-svelte": "^7.1.0",
     "rollup-plugin-typescript2": "^0.34.1",
     "svelte": "^3.55.1",
