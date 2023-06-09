@@ -256,8 +256,8 @@ export const getInputValue = (inputElement: HTMLInputElement): any => {
     return +inputElement.value;
   }
 
-  if(type === "file") {
-    return inputElement.files
+  if (type === 'file') {
+    return inputElement.files;
   }
 
   return inputElement.value;
