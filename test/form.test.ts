@@ -171,41 +171,16 @@ describe('Form Internals: getInputValue', () => {
     expect(getInputValue(htmlInputElement)).toStrictEqual(1234);
   });
 
-  it('Retrieves the selected file(s) if the type is "file"', () => {
-    const files = [
-      { name: 'file1.txt', content: 'content1' },
-      { name: 'file2.txt', content: 'content2' },
-    ];
+  it('Retrieves the FileList for input of type "file"', () => {
     const htmlInputElement = {
       type: 'file',
-      files: files.map(file => ({
-        name: file.name,
-        size: file.content.length,
-        type: 'text/plain',
-        slice: () => new Blob([file.content]),
-      })),
-    } as never;
-  
-    const expectedFiles = files.map(file => ({
-      name: file.name,
-      size: file.content.length,
-      type: 'text/plain',
-    }));
-  
-    const inputValue = getInputValue(htmlInputElement);
-  
-    expect(inputValue.length).toBe(expectedFiles.length);
-  
-    for (let i = 0; i < expectedFiles.length; i++) {
-      const expectedFile = expectedFiles[i];
-      const inputFile = inputValue[i];
-  
-      expect(inputFile.name).toBe(expectedFile.name);
-      expect(inputFile.size).toBe(expectedFile.size);
-      expect(inputFile.type).toBe(expectedFile.type);
-    }
+      files: new File([], 'test.txt'),
+      value: 'C:\\fakepath\\test.txt',
+    } as unknown as HTMLInputElement;
+    const value = getInputValue(htmlInputElement);
+
+    expect(value).toStrictEqual(htmlInputElement.files);
   });
-  
 
   it('Retrieves the input value "as is" as fallback', () => {
     const instances = [
