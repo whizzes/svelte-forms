@@ -171,6 +171,17 @@ describe('Form Internals: getInputValue', () => {
     expect(getInputValue(htmlInputElement)).toStrictEqual(1234);
   });
 
+  it('Retrieves the FileList for input of type "file"', () => {
+    const htmlInputElement = {
+      type: 'file',
+      files: new File([], 'test.txt'),
+      value: 'C:\\fakepath\\test.txt',
+    } as unknown as HTMLInputElement;
+    const value = getInputValue(htmlInputElement);
+
+    expect(value).toStrictEqual(htmlInputElement.files);
+  });
+
   it('Retrieves the input value "as is" as fallback', () => {
     const instances = [
       {

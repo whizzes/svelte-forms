@@ -246,6 +246,7 @@ export type FormConfig<T extends object> = {
  * Given a type, `getInputValue` will retrieve the value as follows:
  *
  * - `number` or `range`: Retrieve the `number` equivalent using `+` sign.
+ * - `file`: Retrieve the selected file(s) using `inputElement.files`.
  * - As fallback retrieves the value _as is_.
  */
 export const getInputValue = (inputElement: HTMLInputElement): any => {
@@ -253,6 +254,10 @@ export const getInputValue = (inputElement: HTMLInputElement): any => {
 
   if (type.match(/^(number|range)$/)) {
     return +inputElement.value;
+  }
+
+  if (type === 'file') {
+    return inputElement.files;
   }
 
   return inputElement.value;
