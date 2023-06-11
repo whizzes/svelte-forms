@@ -132,7 +132,7 @@ export type FormInstance<T extends object> = {
    */
   setFieldValue(
     field: keyof T,
-    value: string | number | boolean | FileList | File | null,
+    value: string | number | boolean | null,
     shouldValidateField?: boolean,
   ): void;
 
@@ -249,15 +249,11 @@ export type FormConfig<T extends object> = {
  */
 export const getInputValue = (
   inputElement: HTMLInputElement,
-): string | number | boolean | FileList | File | null => {
+): string | number | boolean | null => {
   const type = inputElement.type;
 
   if (type.match(/^(number|range)$/)) {
     return +inputElement.value;
-  }
-
-  if (type === 'file') {
-    return inputElement.files;
   }
 
   return inputElement.value;
@@ -414,7 +410,7 @@ export const newForm: NewFormFn = <T extends object>(
 
   const setFieldValue = (
     field: keyof T,
-    value: string | number | boolean | FileList | File | null,
+    value: string | number | boolean | null,
     shouldValidateField?: boolean,
   ): void => {
     values.update((currentValues) => ({
