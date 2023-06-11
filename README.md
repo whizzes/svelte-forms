@@ -7,12 +7,13 @@
 
 <div align="center">
 
+[![Discord](https://img.shields.io/discord/1011702194925490186?color=blue&label=discord&logo=discord)](https://discord.gg/yde6mcgs2C)
 ![Build](https://github.com/whizzes/svelte-forms/workflows/build/badge.svg)
 ![Tests](https://github.com/whizzes/svelte-forms/workflows/test/badge.svg)
 ![Lint](https://github.com/whizzes/svelte-forms/workflows/lint/badge.svg)
 ![Publish](https://github.com/whizzes/svelte-forms/workflows/publish/badge.svg)
-[![Version](https://img.shields.io/npm/v/@whizzes/svelte-forms.svg?style=flat)](https://www.npmjs.com/package/@whizzes/svelte-confeti)
-[![Downloads](https://img.shields.io/npm/dm/@whizzes/svelte-forms.svg?style=flat)](https://www.npmjs.com/package/@whizzes/svelte-confeti)
+[![Version](https://img.shields.io/npm/v/@whizzes/svelte-forms.svg?style=flat)](https://www.npmjs.com/package/@whizzes/svelte-forms)
+[![Downloads](https://img.shields.io/npm/dm/@whizzes/svelte-forms.svg?style=flat)](https://www.npmjs.com/package/@whizzes/svelte-forms)
 
 </div>
 
