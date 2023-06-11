@@ -8,8 +8,7 @@ export function field<T extends object>(
     throw new Error('Missing "FormInstance".');
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  if ((node as any).tagName !== 'INPUT') {
+  if ((node as HTMLInputElement).tagName !== 'INPUT') {
     throw new Error('Expected an `<input />` element.');
   }
 
@@ -19,7 +18,6 @@ export function field<T extends object>(
   node.addEventListener('input', form.handleInput);
 
   form.values.subscribe((values) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (node as any).value = values[(node as any).name];
+    (node as HTMLInputElement).value = values[(node as HTMLInputElement).name];
   });
 }

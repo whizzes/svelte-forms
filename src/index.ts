@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { derived, get, writable } from 'svelte/store';
 import { isSchema, ValidationError } from 'yup';
 
@@ -134,7 +132,7 @@ export type FormInstance<T extends object> = {
    */
   setFieldValue(
     field: keyof T,
-    value: any,
+    value: string | number | boolean | FileList | File | null,
     shouldValidateField?: boolean,
   ): void;
 
@@ -249,7 +247,9 @@ export type FormConfig<T extends object> = {
  * - `file`: Retrieve the selected file(s) using `inputElement.files`.
  * - As fallback retrieves the value _as is_.
  */
-export const getInputValue = (inputElement: HTMLInputElement): any => {
+export const getInputValue = (
+  inputElement: HTMLInputElement,
+): string | number | boolean | FileList | File | null => {
   const type = inputElement.type;
 
   if (type.match(/^(number|range)$/)) {
@@ -414,7 +414,7 @@ export const newForm: NewFormFn = <T extends object>(
 
   const setFieldValue = (
     field: keyof T,
-    value: any,
+    value: string | number | boolean | FileList | File | null,
     shouldValidateField?: boolean,
   ): void => {
     values.update((currentValues) => ({
@@ -447,7 +447,7 @@ export const newForm: NewFormFn = <T extends object>(
     const name = target.name as keyof T;
     const value = getInputValue(target);
 
-    return setFieldValue(name, value, config.validateOnChange);
+    setFieldValue(name, value, config.validateOnChange);
   };
 
   const handleFocus = (event: Event): void => {
@@ -466,7 +466,7 @@ export const newForm: NewFormFn = <T extends object>(
     const name = target.name;
     const value = getInputValue(target);
 
-    return setFieldValue(name as keyof T, value, config.validateOnInput);
+    setFieldValue(name as keyof T, value, config.validateOnInput);
   };
 
   const handleSubmit = async (event: Event): Promise<void> => {

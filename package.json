@@ -13,8 +13,9 @@
     "dev": "rollup -c rollup.config.js --watch",
     "test": "vitest --config ./vitest.config.ts run",
     "test:dev": "vitest --config ./vitest.config.ts watch",
-    "lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
-    "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. . && eslint --fix ."
+    "lint": "rome format ./src && rome check ./src",
+    "format": "rome format --write ./src && rome check --apply ./src",
+    "format:unsafe": "rome format --write ./src && rome check --apply-unsafe ./src"
   },
   "repository": {
     "type": "git",
@@ -35,15 +36,9 @@
     "@rollup/plugin-commonjs": "^24.0.0",
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@testing-library/svelte": "^3.2.2",
-    "@typescript-eslint/eslint-plugin": "^5.48.1",
-    "@typescript-eslint/parser": "^5.48.1",
-    "@vitest/coverage-c8": "^0.32.0",
     "c8": "^7.12.0",
-    "eslint": "^8.31.0",
-    "eslint-config-prettier": "^8.6.0",
-    "eslint-plugin-prettier": "^4.2.1",
     "jsdom": "^22.1.0",
-    "prettier": "^2.8.2",
+    "rome": "12.1.2",
     "rollup": "^2.69.0",
     "rollup-plugin-svelte": "^7.1.0",
     "rollup-plugin-typescript2": "^0.34.1",
