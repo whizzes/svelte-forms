@@ -13,17 +13,16 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v2
 
-      - name: Setup NodeJS
-        uses: actions/setup-node@v3
+      - name: Setup Bun.sh
+        uses: antongolub/action-setup-bun@v1
         with:
-          node-version: 18
-          registry-url: https://registry.npmjs.org/
+          bun-version: 0.5.9
 
       - name: Install Dependencies
-        run: npm ci
+        run: bun i
 
       - name: Build
-        run: npm run lint
+        run: bun run lint
 
   test:
     name: Run unit tests
@@ -32,17 +31,16 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v2
 
-      - name: Setup NodeJS
-        uses: actions/setup-node@v3
+      - name: Setup Bun.sh
+        uses: antongolub/action-setup-bun@v1
         with:
-          node-version: 18
-          registry-url: https://registry.npmjs.org/
+          bun-version: 0.5.9
 
       - name: Install Dependencies
-        run: npm ci
+        run: bun i
 
       - name: Test
-        run: npm run test
+        run: bun run test
 
   build:
     name: Builds source into JavaScript
@@ -51,17 +49,16 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v2
 
-      - name: Setup NodeJS
-        uses: actions/setup-node@v3
+      - name: Setup Bun.sh
+        uses: antongolub/action-setup-bun@v1
         with:
-          node-version: 18
-          registry-url: https://registry.npmjs.org/
+          bun-version: 0.5.9
 
       - name: Install Dependencies
-        run: npm ci
+        run: bun i
 
       - name: Build
-        run: npm run build
+        run: bun run build
 
   publish:
     name: Publish to npm
@@ -79,11 +76,11 @@ jobs:
       - name: Setup NodeJS
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
           registry-url: https://registry.npmjs.org/
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm i
 
       - name: Build
         run: npm run build
