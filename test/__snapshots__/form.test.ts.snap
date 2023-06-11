@@ -1,4 +1,4 @@
-// Vitest Snapshot v1
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Form: initialValues > Throws a "TypeError" if no "initialValues" are provided to the configuration. 1`] = `"You must specify \\"initialValues\\" with an object to \\"FormConfig\\"."`;
 
