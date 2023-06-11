@@ -13,8 +13,9 @@
     "dev": "rollup -c rollup.config.js --watch",
     "test": "vitest --config ./vitest.config.ts run",
     "test:dev": "vitest --config ./vitest.config.ts watch",
-    "lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
-    "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. . && eslint --fix ."
+    "lint": "rome format ./src && rome check ./src",
+    "format": "rome format --write ./src && rome check --apply ./src",
+    "format:unsafe": "rome format --write ./src && rome check --apply-unsafe ./src"
   },
   "repository": {
     "type": "git",

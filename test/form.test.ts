@@ -1,18 +1,18 @@
-import { get } from 'svelte/store';
-import * as Yup from 'yup';
-import { describe, expect, it, vi } from 'vitest';
+import { get } from "svelte/store";
+import * as Yup from "yup";
+import { describe, expect, it, vi } from "vitest";
 
-import { newForm } from '../src';
-import { getInputValue } from '../src';
+import { newForm } from "../src";
+import { getInputValue } from "../src";
 
-import type { FormConfig } from '../src';
+import type { FormConfig } from "../src";
 
-describe('Form: initialValues', () => {
-  it('Creates a new form with initial values', () => {
+describe("Form: initialValues", () => {
+  it("Creates a new form with initial values", () => {
     const initialValues = {
-      name: 'Esteban',
-      last: 'Borai',
-      email: 'esteban@mail.com',
+      name: "Esteban",
+      last: "Borai",
+      email: "esteban@mail.com",
     };
     const form = newForm<{ name: string; last: string; email: string }>({
       initialValues,
@@ -25,29 +25,29 @@ describe('Form: initialValues', () => {
     expect(values.email).toStrictEqual(initialValues.email);
   });
 
-  it('Uses a copy of `initialValues` instead of relying on the object reference', () => {
+  it("Uses a copy of `initialValues` instead of relying on the object reference", () => {
     const initialValues = {
-      name: 'Esteban',
-      last: 'Borai',
-      email: 'esteban@mail.com',
+      name: "Esteban",
+      last: "Borai",
+      email: "esteban@mail.com",
     };
     const form = newForm<{ name: string; last: string; email: string }>({
       initialValues,
       onSubmit: vi.fn(),
     });
 
-    initialValues.name = 'John';
-    initialValues.last = 'Appleseed';
-    initialValues.email = 'john@mail.com';
+    initialValues.name = "John";
+    initialValues.last = "Appleseed";
+    initialValues.email = "john@mail.com";
 
-    expect(get(form.initialValues).name).toStrictEqual('Esteban');
-    expect(get(form.initialValues).last).toStrictEqual('Borai');
-    expect(get(form.initialValues).email).toStrictEqual('esteban@mail.com');
+    expect(get(form.initialValues).name).toStrictEqual("Esteban");
+    expect(get(form.initialValues).last).toStrictEqual("Borai");
+    expect(get(form.initialValues).email).toStrictEqual("esteban@mail.com");
   });
 
   it('Throws a "TypeError" if no "initialValues" are provided to the configuration.', () => {
     expect(() =>
-      newForm({} as FormConfig<Record<string, unknown>>),
+      newForm({} as FormConfig<Record<string, unknown>>)
     ).toThrowErrorMatchingSnapshot();
   });
 
@@ -58,27 +58,27 @@ describe('Form: initialValues', () => {
   });
 });
 
-describe('Form: $values', () => {
-  it('`form.$values` from `newForm` is a store with a subscribe function', () => {
+describe("Form: $values", () => {
+  it("`form.$values` from `newForm` is a store with a subscribe function", () => {
     const form = newForm({ initialValues: {}, onSubmit: vi.fn() });
 
     expect(form.values.subscribe).toBeDefined();
   });
 
   it('Holds "initialValues" when subscribing for the first time', () => {
-    const initialValues = { name: 'Lorem', last: 'Ipsum' };
+    const initialValues = { name: "Lorem", last: "Ipsum" };
     const form = newForm<typeof initialValues>({
       initialValues,
       onSubmit: vi.fn(),
     });
     const values = get(form.values);
 
-    expect(values.name).toStrictEqual('Lorem');
-    expect(values.last).toStrictEqual('Ipsum');
+    expect(values.name).toStrictEqual("Lorem");
+    expect(values.last).toStrictEqual("Ipsum");
   });
 
   it('Updates $values when "handleChange" is executed', () => {
-    const initialValues = { name: 'Lorem', last: 'Ipsum' };
+    const initialValues = { name: "Lorem", last: "Ipsum" };
     const form = newForm<typeof initialValues>({
       initialValues,
       onSubmit: vi.fn(),
@@ -86,77 +86,77 @@ describe('Form: $values', () => {
 
     form.handleChange({
       target: {
-        name: 'name',
-        value: 'Testing!',
-        type: 'text',
+        name: "name",
+        value: "Testing!",
+        type: "text",
       },
     } as unknown as Event);
     const values = get(form.values);
 
-    expect(values.name).toStrictEqual('Testing!');
+    expect(values.name).toStrictEqual("Testing!");
   });
 
   it('Updates $values when "setFieldValue" is executed', () => {
-    const initialValues = { name: 'Lorem', last: 'Ipsum' };
+    const initialValues = { name: "Lorem", last: "Ipsum" };
     const form = newForm<typeof initialValues>({
       initialValues,
       onSubmit: vi.fn(),
     });
 
-    form.setFieldValue('name', 'Testing!');
+    form.setFieldValue("name", "Testing!");
     const values = get(form.values);
 
-    expect(values.name).toStrictEqual('Testing!');
+    expect(values.name).toStrictEqual("Testing!");
   });
 });
 
-describe('Form: validateField', () => {
-  it('Validates a single field', async () => {
+describe("Form: validateField", () => {
+  it("Validates a single field", async () => {
     const form = newForm({
       initialValues: {
-        name: '',
+        name: "",
       },
       onSubmit: vi.fn(),
       validationSchema: Yup.object({
-        name: Yup.string().required('You must provide the name.'),
+        name: Yup.string().required("You must provide the name."),
       }),
     });
 
-    await form.validateField('name');
+    await form.validateField("name");
     const errors = get(form.errors);
 
-    expect(errors.name).toStrictEqual('You must provide the name.');
+    expect(errors.name).toStrictEqual("You must provide the name.");
   });
 
-  it('Resets error state when form value is updated', async () => {
+  it("Resets error state when form value is updated", async () => {
     expect.assertions(2);
 
     const form = newForm({
       initialValues: {
-        name: '',
+        name: "",
       },
       onSubmit: vi.fn(),
       validationSchema: Yup.object({
-        name: Yup.string().required('You must provide the name.'),
+        name: Yup.string().required("You must provide the name."),
       }),
     });
 
-    await form.validateField('name');
+    await form.validateField("name");
     const errors = get(form.errors);
-    expect(errors.name).toStrictEqual('You must provide the name.');
+    expect(errors.name).toStrictEqual("You must provide the name.");
 
-    form.setFieldValue('name', 'Testing!');
-    await form.validateField('name');
+    form.setFieldValue("name", "Testing!");
+    await form.validateField("name");
     const errors2 = get(form.errors);
     expect(errors2.name).toBeNull();
   });
 });
 
-describe('Form Internals: getInputValue', () => {
+describe("Form Internals: getInputValue", () => {
   it('Retrieves the input value as a "number" if the type is "number"', () => {
     const htmlInputElement = {
-      type: 'number',
-      value: '1234',
+      type: "number",
+      value: "1234",
     } as HTMLInputElement;
 
     expect(getInputValue(htmlInputElement)).toStrictEqual(1234);
@@ -164,8 +164,8 @@ describe('Form Internals: getInputValue', () => {
 
   it('Retrieves the input value as a "number" if the type is "range"', () => {
     const htmlInputElement = {
-      type: 'range',
-      value: '1234',
+      type: "range",
+      value: "1234",
     } as HTMLInputElement;
 
     expect(getInputValue(htmlInputElement)).toStrictEqual(1234);
@@ -173,9 +173,9 @@ describe('Form Internals: getInputValue', () => {
 
   it('Retrieves the FileList for input of type "file"', () => {
     const htmlInputElement = {
-      type: 'file',
-      files: new File([], 'test.txt'),
-      value: 'C:\\fakepath\\test.txt',
+      type: "file",
+      files: new File([], "test.txt"),
+      value: "C:\\fakepath\\test.txt",
     } as unknown as HTMLInputElement;
     const value = getInputValue(htmlInputElement);
 
@@ -185,15 +185,15 @@ describe('Form Internals: getInputValue', () => {
   it('Retrieves the input value "as is" as fallback', () => {
     const instances = [
       {
-        type: 'text',
-        value: 'testing',
+        type: "text",
+        value: "testing",
       },
       {
-        type: 'whateva',
+        type: "whateva",
         value: { foo: 1, bar: 2 },
       },
       {
-        type: 'boo',
+        type: "boo",
         value: null,
       },
     ] as HTMLInputElement[];
@@ -207,12 +207,12 @@ describe('Form Internals: getInputValue', () => {
   });
 });
 
-describe('Form: handleSubmit', () => {
-  it('Executes `onSubmit` when calling `handleSubmit`', () => {
+describe("Form: handleSubmit", () => {
+  it("Executes `onSubmit` when calling `handleSubmit`", () => {
     const onSubmit = vi.fn();
     const form = newForm({
       initialValues: {
-        name: '',
+        name: "",
       },
       onSubmit,
     });
@@ -222,13 +222,12 @@ describe('Form: handleSubmit', () => {
     expect(onSubmit).toHaveBeenCalledOnce();
   });
 
-  it('Executes `event.preventDefault` when calling `handleSubmit`', () => {
+  it("Executes `event.preventDefault` when calling `handleSubmit`", () => {
     const onSubmit = vi.fn();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const preventDefault = vi.fn() as any;
+    const preventDefault = vi.fn() as Function;
     const form = newForm({
       initialValues: {
-        name: '',
+        name: "",
       },
       onSubmit,
     });
@@ -240,13 +239,12 @@ describe('Form: handleSubmit', () => {
     expect(preventDefault).toHaveBeenCalledOnce();
   });
 
-  it('Executes `event.stopPropagation` when calling `handleSubmit`', () => {
+  it("Executes `event.stopPropagation` when calling `handleSubmit`", () => {
     const onSubmit = vi.fn();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const stopPropagation = vi.fn() as any;
+    const stopPropagation = vi.fn() as Function;
     const form = newForm({
       initialValues: {
-        name: '',
+        name: "",
       },
       onSubmit,
     });
@@ -259,25 +257,25 @@ describe('Form: handleSubmit', () => {
   });
 });
 
-describe('Form: setInitialValues', () => {
-  it('Sets form initial values', () => {
+describe("Form: setInitialValues", () => {
+  it("Sets form initial values", () => {
     const form = newForm({
       initialValues: {
-        name: 'James',
-        lastName: 'Gordon',
+        name: "James",
+        lastName: "Gordon",
       },
       onSubmit: vi.fn(),
     });
 
-    expect(get(form.initialValues).name).toStrictEqual('James');
-    expect(get(form.initialValues).lastName).toStrictEqual('Gordon');
+    expect(get(form.initialValues).name).toStrictEqual("James");
+    expect(get(form.initialValues).lastName).toStrictEqual("Gordon");
 
     form.setInitialValues({
-      name: 'Steve',
-      lastName: 'Angelo',
+      name: "Steve",
+      lastName: "Angelo",
     });
 
-    expect(get(form.initialValues).name).toStrictEqual('Steve');
-    expect(get(form.initialValues).lastName).toStrictEqual('Angelo');
+    expect(get(form.initialValues).name).toStrictEqual("Steve");
+    expect(get(form.initialValues).lastName).toStrictEqual("Angelo");
   });
 });
