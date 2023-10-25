@@ -1,5 +1,5 @@
 import { derived, get, writable } from 'svelte/store';
-import { isSchema, ValidationError } from 'yup';
+import { boolean, isSchema, ValidationError } from 'yup';
 
 import { clone } from './utils';
 
@@ -422,6 +422,19 @@ export const newForm: NewFormFn = <T extends object>(
       validateFieldSync(field);
     }
   };
+
+  const checkIsDirty = (): boolean => {
+    get(values)
+    get(__initialValues)
+    
+    for (const key in __initialValues) {
+      if (__initialValues[key] === values[key]) {
+        continue;
+      } else {
+        return true;
+      }
+    }
+  }
 
   const reset = (): void => {
     values.set(get(__initialValues));
