@@ -1,5 +1,5 @@
 import { derived, get, writable } from 'svelte/store';
-import { boolean, isSchema, ValidationError } from 'yup';
+import { isSchema, ValidationError } from 'yup';
 
 import { clone } from './utils';
 
@@ -56,6 +56,10 @@ export type FormInstance<T extends object> = {
    */
   isValidating: Readable<boolean>;
 
+  /**
+   * A readable store which holds a boolean `true` if the initial values of the form have been changed.
+   */
+  isDirty: Readable<boolean>;
   /**
    * Event handler for the input's `blur` event.
    */
@@ -330,6 +334,7 @@ export const newForm: NewFormFn = <T extends object>(
   const __isValidating = writable(false);
 
   const __errors = writable(clone(get(__initialValues), null) as FormErrors<T>);
+  const __isDirty = writable(false);
   const __touched = writable(
     clone(get(__initialValues), false) as Record<keyof T, boolean>,
   );
@@ -418,23 +423,25 @@ export const newForm: NewFormFn = <T extends object>(
       [field]: value,
     }));
 
+    const isDirtyNow = checkIsDirty();
+    __isDirty.set(isDirtyNow);
+
     if (shouldValidateField && config.validationSchema) {
       validateFieldSync(field);
     }
   };
 
   const checkIsDirty = (): boolean => {
-    get(values)
-    get(__initialValues)
-    
-    for (const key in __initialValues) {
-      if (__initialValues[key] === values[key]) {
-        continue;
-      } else {
+    const value = get(values);
+    const inititial_values = get(__initialValues);
+
+    for (const key in inititial_values) {
+      if (inititial_values[key] !== value[key]) {
         return true;
       }
     }
-  }
+    return false;
+  };
 
   const reset = (): void => {
     values.set(get(__initialValues));
@@ -549,6 +556,7 @@ export const newForm: NewFormFn = <T extends object>(
     handleInput,
     handleSubmit,
     initialValues: derived(__initialValues, (initialValues) => initialValues),
+    isDirty: derived(__isDirty, (isDirty) => isDirty),
     isSubmitting: derived(__isSubmitting, (isSubmitting) => isSubmitting),
     isValidating: derived(__isValidating, (isValidating) => isValidating),
     reset,
