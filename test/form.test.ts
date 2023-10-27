@@ -252,6 +252,8 @@ it("Return true when the inicial value is modified", () => {
       initialValues,
       onSubmit: vi.fn(),
     });
+    
+    expect(get(form.isDirty)).toStrictEqual(false);
 
     form.setFieldValue('name', 'John');
 
