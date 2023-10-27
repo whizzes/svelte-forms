@@ -256,7 +256,7 @@ it("Return true when the inicial value is equal that value", () => {
     form.setFieldValue('name', 'John');
     const values = get(form.values);
 
-    expect(form.isDirty).toStrictEqual(true);
+    expect(get(form.isDirty)).toStrictEqual(true);
     expect(values.name).toStrictEqual("Testing!");
 });
 
