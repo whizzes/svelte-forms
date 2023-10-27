@@ -57,6 +57,10 @@ export type FormInstance<T extends object> = {
   isValidating: Readable<boolean>;
 
   /**
+   * A readable store which holds a boolean `true` if the initial values of the form have been changed.
+   */
+  isDirty: Readable<boolean>;
+  /**
    * Event handler for the input's `blur` event.
    */
   handleBlur(event: Event): void;
@@ -330,6 +334,7 @@ export const newForm: NewFormFn = <T extends object>(
   const __isValidating = writable(false);
 
   const __errors = writable(clone(get(__initialValues), null) as FormErrors<T>);
+  const __isDirty = writable(false);
   const __touched = writable(
     clone(get(__initialValues), false) as Record<keyof T, boolean>,
   );
@@ -418,9 +423,23 @@ export const newForm: NewFormFn = <T extends object>(
       [field]: value,
     }));
 
+    __isDirty.set(checkIsDirty());
+
     if (shouldValidateField && config.validationSchema) {
       validateFieldSync(field);
     }
+  };
+
+  const checkIsDirty = (): boolean => {
+    const value = get(values);
+    const initialValues = get(__initialValues);
+
+    for (const key in initialValues) {
+      if (initialValues[key] !== value[key]) {
+        return true;
+      }
+    }
+    return false;
   };
 
   const reset = (): void => {
@@ -536,6 +555,7 @@ export const newForm: NewFormFn = <T extends object>(
     handleInput,
     handleSubmit,
     initialValues: derived(__initialValues, (initialValues) => initialValues),
+    isDirty: derived(__isDirty, (isDirty) => isDirty),
     isSubmitting: derived(__isSubmitting, (isSubmitting) => isSubmitting),
     isValidating: derived(__isValidating, (isValidating) => isValidating),
     reset,

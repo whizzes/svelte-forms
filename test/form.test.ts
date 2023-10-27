@@ -246,6 +246,20 @@ describe("Form: handleSubmit", () => {
   });
 });
 
+it("Return true when the inicial value is modified", () => {
+  const initialValues = { name: "Lorem", last: "Ipsum" };
+    const form = newForm<typeof initialValues>({
+      initialValues,
+      onSubmit: vi.fn(),
+    });
+    
+    expect(get(form.isDirty)).toStrictEqual(false);
+
+    form.setFieldValue('name', 'John');
+
+    expect(get(form.isDirty)).toStrictEqual(true);
+});
+
 describe("Form: setInitialValues", () => {
   it("Sets form initial values", () => {
     const form = newForm({
