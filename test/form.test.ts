@@ -253,13 +253,7 @@ it("Return true when the inicial value is equal that value", () => {
       onSubmit: vi.fn(),
     });
 
-    form.handleChange({
-      target: {
-        name: "name",
-        value: "Testing!",
-        type: "text",
-      },
-    } as unknown as Event);
+    form.setFieldValue('name', 'John');
     const values = get(form.values);
 
     expect(form.isDirty).toStrictEqual(true);
