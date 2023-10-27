@@ -423,8 +423,7 @@ export const newForm: NewFormFn = <T extends object>(
       [field]: value,
     }));
 
-    const isDirtyNow = checkIsDirty();
-    __isDirty.set(isDirtyNow);
+    __isDirty.set(checkIsDirty());
 
     if (shouldValidateField && config.validationSchema) {
       validateFieldSync(field);
