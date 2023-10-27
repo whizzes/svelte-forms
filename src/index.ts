@@ -432,7 +432,7 @@ export const newForm: NewFormFn = <T extends object>(
 
   const checkIsDirty = (): boolean => {
     const value = get(values);
-    const inititial_values = get(__initialValues);
+    const initialValues = get(__initialValues);
 
     for (const key in inititial_values) {
       if (inititial_values[key] !== value[key]) {
