@@ -434,8 +434,8 @@ export const newForm: NewFormFn = <T extends object>(
     const value = get(values);
     const initialValues = get(__initialValues);
 
-    for (const key in inititial_values) {
-      if (inititial_values[key] !== value[key]) {
+    for (const key in initialValues) {
+      if (initialValues[key] !== value[key]) {
         return true;
       }
     }

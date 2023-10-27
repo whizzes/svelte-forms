@@ -246,7 +246,7 @@ describe("Form: handleSubmit", () => {
   });
 });
 
-it("Return true when the inicial value is equal that value", () => {
+it("Return true when the inicial value is modified", () => {
   const initialValues = { name: "Lorem", last: "Ipsum" };
     const form = newForm<typeof initialValues>({
       initialValues,
@@ -254,10 +254,8 @@ it("Return true when the inicial value is equal that value", () => {
     });
 
     form.setFieldValue('name', 'John');
-    const values = get(form.values);
 
     expect(get(form.isDirty)).toStrictEqual(true);
-    expect(values.name).toStrictEqual("Testing!");
 });
 
 describe("Form: setInitialValues", () => {
