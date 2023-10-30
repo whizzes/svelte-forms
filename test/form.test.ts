@@ -244,20 +244,37 @@ describe("Form: handleSubmit", () => {
 
     expect(stopPropagation).toHaveBeenCalledOnce();
   });
-});
 
-it("Return true when the inicial value is modified", () => {
-  const initialValues = { name: "Lorem", last: "Ipsum" };
-    const form = newForm<typeof initialValues>({
-      initialValues,
-      onSubmit: vi.fn(),
-    });
-    
-    expect(get(form.isDirty)).toStrictEqual(false);
+  it("isDirty is `true` when initial values differ from current (imperative)", () => {
+    const initialValues = { name: "Lorem", last: "Ipsum" };
+      const form = newForm<typeof initialValues>({
+        initialValues,
+        onSubmit: vi.fn(),
+      });
+      
+      expect(get(form.isDirty)).toStrictEqual(false);
+  
+      form.setFieldValue('name', 'John');
+  
+      expect(get(form.isDirty)).toStrictEqual(true);
+  });
 
-    form.setFieldValue('name', 'John');
-
-    expect(get(form.isDirty)).toStrictEqual(true);
+  it("isDirty is `true` when initial values differ from current (store subscription)", () => {
+    const initialValues = { name: "Lorem", last: "Ipsum" };
+      const form = newForm<typeof initialValues>({
+        initialValues,
+        onSubmit: vi.fn(),
+      });
+      
+      expect(get(form.isDirty)).toStrictEqual(false);
+  
+      form.values.update((values) => ({
+        ...values,
+        name: 'John',
+      }));
+  
+      expect(get(form.isDirty)).toStrictEqual(true);
+  });
 });
 
 describe("Form: setInitialValues", () => {

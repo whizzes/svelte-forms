@@ -3,7 +3,7 @@ import { isSchema, ValidationError } from 'yup';
 
 import { clone } from './utils';
 
-import type { Readable, Writable } from 'svelte/store';
+import type { Readable, Unsubscriber, Writable } from 'svelte/store';
 import type { Schema } from 'yup';
 
 export { field } from './action';
@@ -17,6 +17,13 @@ export type SetFieldTouched<T> = (field: keyof T, value: boolean) => void;
 export type SetFieldValue<T> = (field: keyof T, value: unknown) => void;
 
 export type SetInitialValues<T> = (initialValues: T) => void;
+
+/**
+ * Internal Subscriptions
+ */
+export type Subscriptions = {
+  values: Unsubscriber;
+};
 
 export type OnSubmitHelpers<T> = {
   setFieldError: SetFieldError<T>;
@@ -139,6 +146,8 @@ export type FormInstance<T extends object> = {
     value: string | number | boolean | string[] | number[] | null,
     shouldValidateField?: boolean,
   ): void;
+
+  subscriptions: Subscriptions;
 
   /**
    * Form touched (e.g. clicked) fields.
@@ -334,10 +343,13 @@ export const newForm: NewFormFn = <T extends object>(
   const __isValidating = writable(false);
 
   const __errors = writable(clone(get(__initialValues), null) as FormErrors<T>);
+
   const __isDirty = writable(false);
+
   const __touched = writable(
     clone(get(__initialValues), false) as Record<keyof T, boolean>,
   );
+
   const values = writable({
     ...get(__initialValues),
   });
@@ -416,18 +428,11 @@ export const newForm: NewFormFn = <T extends object>(
   const setFieldValue = (
     field: keyof T,
     value: string | number | boolean | null,
-    shouldValidateField?: boolean,
   ): void => {
     values.update((currentValues) => ({
       ...currentValues,
       [field]: value,
     }));
-
-    __isDirty.set(checkIsDirty());
-
-    if (shouldValidateField && config.validationSchema) {
-      validateFieldSync(field);
-    }
   };
 
   const checkIsDirty = (): boolean => {
@@ -462,7 +467,7 @@ export const newForm: NewFormFn = <T extends object>(
     const name = target.name as keyof T;
     const value = getInputValue(target);
 
-    setFieldValue(name, value, config.validateOnChange);
+    setFieldValue(name, value);
   };
 
   const handleFocus = (event: Event): void => {
@@ -481,7 +486,7 @@ export const newForm: NewFormFn = <T extends object>(
     const name = target.name;
     const value = getInputValue(target);
 
-    setFieldValue(name as keyof T, value, config.validateOnInput);
+    setFieldValue(name as keyof T, value);
   };
 
   const handleSubmit = async (event: Event): Promise<void> => {
@@ -546,6 +551,22 @@ export const newForm: NewFormFn = <T extends object>(
     }
   };
 
+  /**
+   *
+   * @param values - The internal form values store
+   *
+   * This function is called whenever the form values store is updated,
+   * side effects on this function will be executed whenever the form values
+   * are updated.
+   */
+  const handleValuesChange = (_: T): void => {
+    __isDirty.set(checkIsDirty());
+  };
+
+  const subscriptions: Subscriptions = {
+    values: values.subscribe(handleValuesChange),
+  };
+
   return {
     clearErrors,
     errors: derived(__errors, (errors) => errors),
@@ -563,6 +584,7 @@ export const newForm: NewFormFn = <T extends object>(
     setFieldTouched,
     setFieldValue,
     setInitialValues,
+    subscriptions,
     touched: derived(__touched, (touched) => touched),
     values,
     validateField,
