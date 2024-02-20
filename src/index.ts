@@ -520,6 +520,7 @@ export const newForm: NewFormFn = <T extends object>(
               abortEarly: false,
             });
           } catch (error) {
+            console.warn(error);
             if (error?.inner) {
               const validationErrors = error.inner.reduce(
                 (acc: FormErrors<T>, { message, path }) => {
