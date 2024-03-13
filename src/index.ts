@@ -4,7 +4,7 @@ import { isSchema, ValidationError } from 'yup';
 import { clone } from './utils';
 
 import type { Readable, Unsubscriber, Writable } from 'svelte/store';
-import type { Schema } from 'yup';
+import type { Schema, ValidateOptions } from 'yup';
 
 export { field } from './action';
 
@@ -249,6 +249,8 @@ export type FormConfig<T extends object> = {
    * [1]: https://github.com/jquense/yup
    */
   validationSchema?: Schema;
+
+  validationOption?: ValidateOptions;
 };
 
 /**
@@ -516,9 +518,7 @@ export const newForm: NewFormFn = <T extends object>(
           try {
             __isValidating.set(true);
 
-            await config.validationSchema.validate(currentValues, {
-              abortEarly: false,
-            });
+            await config.validationSchema.validate(currentValues, config.validationOption);
           } catch (error) {
             console.warn(error);
             if (error?.inner) {
