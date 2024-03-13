@@ -249,8 +249,12 @@ export type FormConfig<T extends object> = {
    * [1]: https://github.com/jquense/yup
    */
   validationSchema?: Schema;
-
-  validationOption?: ValidateOptions;
+  /**
+   * [Yup][1] validation options used internally
+   *
+   * [1]: https://github.com/jquense/yup
+   */
+  validationOptions?: ValidateOptions;
 };
 
 /**
