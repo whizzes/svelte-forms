@@ -522,7 +522,12 @@ export const newForm: NewFormFn = <T extends object>(
           try {
             __isValidating.set(true);
 
-            await config.validationSchema.validate(currentValues, config.validationOption);
+            await config.validationSchema.validate(
+              currentValues,
+              config.validationOptions
+                ? config.validationOptions
+                : { abortEarly: false },
+            );
           } catch (error) {
             console.warn(error);
             if (error?.inner) {
