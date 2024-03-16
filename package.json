@@ -1,6 +1,6 @@
 {
   "name": "@whizzes/svelte-forms",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Svelte form handlers",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
