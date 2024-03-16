@@ -299,3 +299,117 @@ describe("Form: setInitialValues", () => {
     expect(get(form.initialValues).lastName).toStrictEqual("Angelo");
   });
 });
+
+describe("Yup Validation Options: abortEarly error reporting behavior", () => {
+  it("Reports all the available errors by default ({ abortEarly: false })", async () => {
+    const form = newForm({
+      initialValues: {
+        name: "",
+        lastName: "",
+      },
+      onSubmit: vi.fn(),
+      validationSchema: Yup.object({
+        name: Yup.string().required("You must provide the name."),
+        lastName: Yup.string().required("You must provide the last name."),
+      }),
+    });
+
+    await form.handleSubmit({} as Event);
+
+    const errors = get(form.errors);
+
+    expect(errors.name).toStrictEqual("You must provide the name.");
+    expect(errors.lastName).toStrictEqual("You must provide the last name.");
+    expect(Object.keys(errors).length).toStrictEqual(2);
+  });
+
+  it("Reports first error when `abortEarly` is `true` ({ abortEarly: true })", async () => {
+    const form = newForm({
+      initialValues: {
+        name: "",
+        lastName: "",
+      },
+      onSubmit: vi.fn(),
+      validationSchema: Yup.object({
+        name: Yup.string().required("You must provide the name."),
+        lastName: Yup.string().required("You must provide the last name."),
+      }),
+      validationOptions: {
+        abortEarly: true,
+      }
+    });
+
+    await form.handleSubmit({} as Event);
+
+    const errors = get(form.errors);
+
+    expect(errors.name).toBeUndefined();
+    expect(errors.lastName).toStrictEqual('You must provide the last name.');
+    expect(Object.keys(errors).length).toStrictEqual(1);
+  });
+});
+
+describe("Form: setInitialValues", () => {
+  it("Sets form initial values", () => {
+    const form = newForm({
+      initialValues: {
+        name: "James",
+        lastName: "Gordon",
+      },
+      onSubmit: vi.fn(),
+    });
+
+    expect(get(form.initialValues).name).toStrictEqual("James");
+    expect(get(form.initialValues).lastName).toStrictEqual("Gordon");
+
+    form.setInitialValues({
+      name: "Steve",
+      lastName: "Angelo",
+    });
+
+    expect(get(form.initialValues).name).toStrictEqual("Steve");
+    expect(get(form.initialValues).lastName).toStrictEqual("Angelo");
+  });
+});
+
+describe("Form Debug Behavior", () => {
+  it("Logs warning on validation error when `debug` option is set to `true`", async () => {
+    const consoleMock = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const form = newForm({
+      initialValues: {
+        name: "",
+        lastName: "",
+      },
+      onSubmit: vi.fn(),
+      validationSchema: Yup.object({
+        name: Yup.string().required("You must provide the name."),
+        lastName: Yup.string().required("You must provide the last name."),
+      }),
+      debug: true,
+    });
+
+    await form.handleSubmit({} as Event);
+
+    expect(consoleMock).toHaveBeenCalledOnce();
+  });
+
+  it("Do not log warnings on validation error when `debug` option is unset", async () => {
+    const consoleMock = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const form = newForm({
+      initialValues: {
+        name: "",
+        lastName: "",
+      },
+      onSubmit: vi.fn(),
+      validationSchema: Yup.object({
+        name: Yup.string().required("You must provide the name."),
+        lastName: Yup.string().required("You must provide the last name."),
+      }),
+      debug: false,
+    });
+
+    await form.handleSubmit({} as Event);
+
+    expect(consoleMock).not.toHaveBeenCalled();
+  });
+});

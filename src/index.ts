@@ -208,6 +208,11 @@ export type FormInstance<T extends object> = {
 
 export type FormConfig<T extends object> = {
   /**
+   * If `true`, validation errors are printed to the console.
+   */
+  debug?: boolean;
+
+  /**
    * Form's fields initial values.
    *
    * This object is required to initialize a new form, it's used to track
@@ -529,7 +534,21 @@ export const newForm: NewFormFn = <T extends object>(
                 : { abortEarly: false },
             );
           } catch (error) {
-            console.warn(error);
+            if (config.debug) {
+              console.warn(error);
+            }
+
+            if (config.validationOptions?.abortEarly) {
+              const field = error.path as keyof T;
+              const message = error.errors[0];
+
+              __errors.set({
+                [field]: message,
+              } as FormErrors<T>);
+
+              return;
+            }
+
             if (error?.inner) {
               const validationErrors = error.inner.reduce(
                 (acc: FormErrors<T>, { message, path }) => {
