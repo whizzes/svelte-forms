@@ -24,5 +24,8 @@ jobs:
       - name: Install Dependencies
         run: bun i
 
+      - name: Check 
+        run: bun run check
+
       - name: Build
         run: bun run build
