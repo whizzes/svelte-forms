@@ -10,13 +10,13 @@ jobs:
     name: Run linter
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Source Code
-        uses: actions/checkout@v2
-
-      - name: Setup Bun.sh
-        uses: antongolub/action-setup-bun@v1
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          bun-version: 0.5.9
+          ref: 'main'
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install Dependencies
         run: bun i
@@ -28,13 +28,13 @@ jobs:
     name: Run unit tests
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Source Code
-        uses: actions/checkout@v2
-
-      - name: Setup Bun.sh
-        uses: antongolub/action-setup-bun@v1
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          bun-version: 0.5.9
+          ref: 'main'
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install Dependencies
         run: bun i
