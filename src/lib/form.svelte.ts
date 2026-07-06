@@ -15,14 +15,6 @@ function clone<T>(value: T): T {
 	}
 }
 
-/**
- * Reactive form state built entirely on Svelte 5 runes.
- *
- * Unlike the Svelte 4 store-based API (`$values`, `$errors`, ...), every
- * property here is a plain reactive value — access it directly, no `$`
- * prefix required, because a `Form` instance is only ever created inside
- * (or imported into) `.svelte` / `.svelte.ts` reactive scope.
- */
 export class Form<T extends Record<string, unknown>> {
 	#initialValues!: T;
 	#options: FormOptions<T>;
