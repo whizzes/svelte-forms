@@ -79,29 +79,29 @@ pnpm add @whizzes/svelte-forms
 </script>
 
 <form>
-  <div>
-    <label>Name</label>
-    <input type="text" name="name" bind:value={$values.name} />
-    <p class:hidden={!$errors.name}></p>
-  </div>
-  <div>
-    <label>Last Name</label>
-    <input type="text" name="lastName" bind:value={$values.lastName} />
-    <p class:hidden={!$errors.lastName}></p>
-  </div>
-  <div>
-    <label>Nickname</label>
-    <input type="text" name="nickname" bind:value={$values.nickname} />
-    <p class:hidden={!$errors.nickname}></p>
-  </div>
-  <div>
-    <label>Email</label>
-    <input type="text" name="email" bind:value={$values.email} />
-    <p class:hidden={!$errors.email}></p>
-  </div>
-  <button type="submit" class:disabled={$isSubmitting} disabled={$isSubmitting}>
-    Create Account
-  </button>
+	<div>
+		<label>Name</label>
+		<input type="text" name="name" bind:value={$values.name} />
+		<p class:hidden={!$errors.name}></p>
+	</div>
+	<div>
+		<label>Last Name</label>
+		<input type="text" name="lastName" bind:value={$values.lastName} />
+		<p class:hidden={!$errors.lastName}></p>
+	</div>
+	<div>
+		<label>Nickname</label>
+		<input type="text" name="nickname" bind:value={$values.nickname} />
+		<p class:hidden={!$errors.nickname}></p>
+	</div>
+	<div>
+		<label>Email</label>
+		<input type="text" name="email" bind:value={$values.email} />
+		<p class:hidden={!$errors.email}></p>
+	</div>
+	<button type="submit" class:disabled={$isSubmitting} disabled={$isSubmitting}>
+		Create Account
+	</button>
 </form>
 ```
 

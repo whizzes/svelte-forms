@@ -1,10 +1,4 @@
-import type {
-	FormErrors,
-	FormHelpers,
-	FormOptions,
-	FormTouched,
-	YupLikeError
-} from './types.js';
+import type { FormErrors, FormHelpers, FormOptions, FormTouched, YupLikeError } from './types.js';
 
 function isYupLikeError(error: unknown): error is YupLikeError {
 	return typeof error === 'object' && error !== null && 'message' in error;
@@ -188,7 +182,8 @@ export class Form<T extends Record<string, unknown>> {
 		(field: keyof T) =>
 		(event: Event & { currentTarget: EventTarget & (HTMLInputElement | HTMLTextAreaElement) }) => {
 			const target = event.currentTarget;
-			const value = target.type === 'checkbox' ? (target as HTMLInputElement).checked : target.value;
+			const value =
+				target.type === 'checkbox' ? (target as HTMLInputElement).checked : target.value;
 
 			this.setFieldValue(field, value as T[keyof T]);
 		};

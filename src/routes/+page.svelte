@@ -35,12 +35,7 @@
 <form onsubmit={form.handleSubmit}>
 	<div>
 		<label for="name">Name</label>
-		<input
-			id="name"
-			type="text"
-			bind:value={form.values.name}
-			onblur={form.handleBlur('name')}
-		/>
+		<input id="name" type="text" bind:value={form.values.name} onblur={form.handleBlur('name')} />
 		{#if form.touched.name && form.errors.name}
 			<p>{form.errors.name}</p>
 		{/if}
